@@ -16,8 +16,6 @@ class App extends Component {
     };
     this.handleFormChange = this.handleFormChange.bind(this);
     this.handleTableChange = this.handleTableChange.bind(this);
-    this.handleDeleteData = this.handleDeleteData.bind(this);
-    this.handelUpdatedata = this.handelUpdatedata.bind(this);
   }
   handleFormChange(state) {
     console.log("App form change");
@@ -46,17 +44,7 @@ class App extends Component {
       students: json
     });
   }
-  handleDeleteData(customer) {
-    console.log("removing", customer.name);
-    var updated_array = this.state.students.filter(function(customers) {
-      return customers.name != customer.name;
-    });
-    this.setState({ students: updated_array });
-    console.log("update state is ", updated_array);
-  }
-  handelUpdatedata(data) {
-    console.log("updating data..");
-  }
+
   render() {
     return (
       <React.Fragment>
@@ -74,10 +62,8 @@ class App extends Component {
           </div>
           <div className="m-3">
             <Tableview
-              handleDeleteData={this.handleDeleteData}
               students={this.state.students}
               handleTableChange={this.handleTableChange}
-              handelUpdatedata={this.handelUpdatedata}
             />
           </div>
         </div>

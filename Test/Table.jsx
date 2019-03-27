@@ -16,6 +16,7 @@ class Tableview extends Component {
     this.componentDidMount = this.componentDidMount.bind(this);
     this.deleteData = this.deleteData.bind(this);
     this.updateData = this.updateData.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
   componentDidMount() {
     var xmlhttp = new XMLHttpRequest();
@@ -32,8 +33,6 @@ class Tableview extends Component {
 
   updateData() {
     console.log("update requested..");
-
-    this.props.handelUpdatedata(this.state.tmpdata);
   }
 
   deleteData(customer) {
@@ -43,7 +42,9 @@ class Tableview extends Component {
     xmlhttp.setRequestHeader("Content-type", "application/json");
     xmlhttp.send(JSON.stringify(customer));
     console.log("deleted", customer.name);
-    this.props.handleDeleteData(customer);
+  }
+  handleChange() {
+    console.log("changed");
   }
 
   render() {
@@ -119,14 +120,7 @@ class Tableview extends Component {
                   placeholder="Name"
                   className="text m-2"
                   value={this.state.tmpdata.name}
-                  onChange={e => {
-                    let update_state = this.state.tmpdata;
-                    update_state.name = e.target.value;
-                    this.setState({
-                      tmpdata: update_state
-                    });
-                    console.log(this.state.tmpdata);
-                  }}
+                  onChange={this.handleChange}
                 />
                 <br />
                 <input
@@ -135,14 +129,7 @@ class Tableview extends Component {
                   placeholder="Phone No."
                   className="text m-2"
                   value={this.state.tmpdata.phone_no}
-                  onChange={e => {
-                    let update_state = this.state.tmpdata;
-                    update_state.phone_no = e.target.value;
-                    this.setState({
-                      tmpdata: update_state
-                    });
-                    console.log(this.state.tmpdata);
-                  }}
+                  onChange={this.handleChange}
                 />
                 <br />
                 <input
@@ -151,14 +138,7 @@ class Tableview extends Component {
                   placeholder="Policy No."
                   className="text m-2"
                   value={this.state.tmpdata.policy_no}
-                  onChange={e => {
-                    let update_state = this.state.tmpdata;
-                    update_state.policy_no = e.target.value;
-                    this.setState({
-                      tmpdata: update_state
-                    });
-                    console.log(this.state.tmpdata);
-                  }}
+                  onChange={this.handleChange}
                 />
               </div>
               <div className="modal-footer">
