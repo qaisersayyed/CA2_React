@@ -21,17 +21,23 @@ class Form extends React.Component {
     });
   }
   addCustomer() {
-    let xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("POST", "http://localhost:8080/");
-    xmlhttp.setRequestHeader("Content-type", "application/json");
-    xmlhttp.send(JSON.stringify(this.state));
-    this.props.handleFormChange(this.state);
-    console.log(this.state);
-    this.setState({
-      name: "",
-      phone_no: "",
-      policy_no: ""
-    });
+    var char = "icici_";
+    var cus = this.state;
+    if (cus.name == "" || cus.phone_no == "" || cus.policy_no == "") {
+      alert("Please Enter Data");
+    } else {
+      let xmlhttp = new XMLHttpRequest();
+      xmlhttp.open("POST", "http://localhost:8080/");
+      xmlhttp.setRequestHeader("Content-type", "application/json");
+      xmlhttp.send(JSON.stringify(this.state));
+      this.props.handleFormChange(this.state);
+      console.log(this.state);
+      this.setState({
+        name: "",
+        phone_no: "",
+        policy_no: ""
+      });
+    }
   }
 
   render() {

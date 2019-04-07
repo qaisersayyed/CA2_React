@@ -4,14 +4,13 @@ class Tableview extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      students: this.props.students,
-      tmpdata: [
-        {
-          name: "",
-          phone_no: "",
-          policy_no: ""
-        }
-      ]
+      unupdated_state: [],
+      customers: this.props.customers,
+      tmpdata: {
+        name: "",
+        phone_no: "",
+        policy_no: ""
+      }
     };
     this.componentDidMount = this.componentDidMount.bind(this);
     this.deleteData = this.deleteData.bind(this);
@@ -24,16 +23,29 @@ class Tableview extends Component {
       const incoming_data = xmlhttp.responseText;
       const json = JSON.parse(incoming_data);
       console.log("data", json);
-      this.setState({ students: json });
+      this.setState({ customers: json });
       this.props.handleTableChange(json);
     };
     xmlhttp.send();
   }
 
-  updateData() {
-    console.log("update requested..");
+  handleUpdateState(customer) {
+    this.setState({ unupdated_state: customer, tmpdata: customer });
+  }
 
-    this.props.handelUpdatedata(this.state.tmpdata);
+  updateData() {
+    console.log(this.state.unupdated_state);
+
+    this.state.unupdated_state.name = this.state.tmpdata.name;
+    this.state.unupdated_state.phone_no = this.state.tmpdata.phone_no;
+    this.state.unupdated_state.policy_no = this.state.tmpdata.policy_no;
+    console.log("update requested..", this.state.unupdated_state);
+    let xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("PUT", "http://localhost:8080/");
+    xmlhttp.setRequestHeader("Content-type", "application/json");
+    xmlhttp.send(JSON.stringify(this.state.unupdated_state));
+    console.log("updated in database");
+    this.props.handelUpdatedata(this.state.unupdated_state, this.state.tmpdata);
   }
 
   deleteData(customer) {
@@ -42,12 +54,12 @@ class Tableview extends Component {
     xmlhttp.open("DELETE", "http://localhost:8080/");
     xmlhttp.setRequestHeader("Content-type", "application/json");
     xmlhttp.send(JSON.stringify(customer));
-    console.log("deleted", customer.name);
+    console.log("deleted", customer);
     this.props.handleDeleteData(customer);
   }
 
   render() {
-    let students = this.props.students;
+    let students = this.props.customers;
     let tabledata = students.map((s, index) => {
       var customer = s;
       return (
@@ -61,6 +73,7 @@ class Tableview extends Component {
               className="btn btn-primary"
               data-toggle="modal"
               data-target="#updatemodal"
+              onClick={e => this.handleUpdateState(customer)}
             >
               Update
             </button>
@@ -170,7 +183,7 @@ class Tableview extends Component {
                   Close
                 </button>
                 <button
-                  onClick={this.updateData}
+                  onClick={e => this.updateData(e)}
                   type="button"
                   className="btn btn-primary"
                   data-dismiss="modal"

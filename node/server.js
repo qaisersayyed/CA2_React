@@ -1,6 +1,7 @@
 var express = require("express");
 var app = express();
 var bodyParser = require("body-parser");
+const Joi = require("joi");
 app.use(bodyParser.json());
 //var fs = require("fs");
 var mysql = require("mysql");
@@ -61,8 +62,8 @@ app.get("/", function(req, res, next) {
 
 app.delete("/", function(req, res) {
   console.log("DELETEING DATA");
-  var name = req.body.name;
-  sql = "DELETE from customer where name ='" + name + "'";
+  var policy_no = req.body.policy_no;
+  sql = "DELETE from customer where policy_no ='" + policy_no + "'";
   console.log("running query", sql);
 
   connection.query(sql, function(err, result) {
@@ -71,6 +72,31 @@ app.delete("/", function(req, res) {
 
   console.log("DATA DELETED!!");
 });
+app.put("/", function(req, res) {
+  name = req.body.name;
+  phone_no = req.body.phone_no;
+  policy_no = req.body.policy_no;
+  customer_id = req.body.customer_id;
+  console.log("updating ", req.body);
 
+  console.log("UPDATING DATA");
+  var sql =
+    "UPDATE customer SET name= '" +
+    name +
+    "', phone_no = '" +
+    phone_no +
+    "' ,policy_no = '" +
+    policy_no +
+    "' WHERE customer_id = '" +
+    customer_id +
+    "' ";
+  console.log("sql = ", sql);
+
+  connection.query(sql, function(err, result) {
+    if (err) throw err;
+    console.log(result.affectedRows + " record(s) updated");
+  });
+  console.log("DATA UPDATED");
+});
 app.listen(8080);
 console.log("Server is ON");
