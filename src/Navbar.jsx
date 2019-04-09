@@ -10,7 +10,7 @@ class Navbar extends Component {
       <React.Fragment>
         <nav className="navbar navbar-dark bg-dark">
           <a className="navbar-brand" style={navbarstyle}>
-            CA 2
+            ICICI Bank.com
           </a>
         </nav>
       </React.Fragment>
